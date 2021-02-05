@@ -16,18 +16,18 @@
             .data(array)
             .enter()
             .append('circle')
-                .attr('r', d => d/2)
+                .attr('r', (d, i) => d/2)
                 .attr('cy', 100)
                 .attr('cx', (d, i) => i * 100 + 50)
 
         setTimeout(function() {
             d3.select('#area')
-            .selectAll('circle')
-            .data(array.sort())
-            .transition()
-            .duration(1500)
-                .attr('r', d => d * 1/2)
-                .attr('cx', (d, i) => i * 100 + 50)
+                .selectAll('circle')
+                .data(array.sort())
+                .transition()
+                .duration(1500)
+                    .attr('r', (d, i) => d/2)
+                    .attr('cx', (d, i) => i * 100 + 50)
         }, 2000)
     </script> 
 </body>
