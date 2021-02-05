@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <h2 class="h2">Homework 1 SVG</h2>
+    <svg id="area" width="1000" height="300"></svg>
+    <script>
+        const array = [92, 56, 14, 73, 22, 38, 93, 45, 55];
+
+        d3.select('#area')
+            .selectAll('circle')
+            .data(array)
+            .enter()
+            .append('circle')
+                .attr('r', d => d/2)
+                .attr('cy', 100)
+                .attr('cx', (d, i) => i * 100 + 50)
+
+        setTimeout(function() {
+            d3.select('#area')
+            .selectAll('circle')
+            .data(array.sort())
+            .transition()
+            .duration(1500)
+                .attr('r', d => d * 1/2)
+                .attr('cx', (d, i) => i * 100 + 50)
+        }, 2000)
+    </script> 
+</body>
+<style>
+    h2 {
+        text-align: center; 
+    }
+</style>
+</html>

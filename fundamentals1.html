@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<body>
+    <svg id="area" width="600" height="200"></svg>
+</body>
+<script>
+    function factors(n) {
+        factorsArray = [];
+        for (let i = 0; i < n; i++) {
+            if (n%i == 0) {
+                factorsArray.push(i);
+            }           
+        }
+        return factorsArray;
+    }
+
+    d3.select('#area')
+        .selectAll('circle')
+        .data(factors(24))
+        .enter()
+        .append('circle')
+            .attr('r', d => d)
+            .attr('cx', d => d*10   )
+            .attr('cy', 100)
+            .style('stroke', 'red');
+</script>
+</html>
