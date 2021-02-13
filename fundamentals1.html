@@ -25,17 +25,18 @@
         return factorsArray;
     }
 
-    //selecting the element with id "area"
+    //selecting the svg element with id "area"
     d3.select('#area')
-    //creating and selecting circles within the element
+        //creating and selecting circles within the element
         .selectAll('circle')
-    //binding data from factors(24)
+        //binding data from factors(24)
         .data(factors(24))
         .enter()
-    //appending to the circle definitions for its radius, position on an x,y plane, and the stroke color
+        //appending to each circle definitions for its radius, position on an x,y plane, and the stroke color
         .append('circle')
+            //radius and cx defined by an int element in factorsArray
             .attr('r', d => d)
-            .attr('cx', d => d*10   )
+            .attr('cx', d => d*10)
             .attr('cy', 100)
             .style('stroke', 'red');
 </script>
