@@ -1,0 +1,85 @@
+<!--
+Your names goes here
+-->
+<body>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+  
+    <!-- Set up basic webpage structure -->
+    <div id="header"></div>
+    <div id="nominal"></div>
+    <div id="ordinal"></div>
+    <div id="interval"></div>
+    <div id="ratio"></div>
+  
+    <style>
+      .red {
+          color: red;
+          margin-top: 20px;
+      }
+      .green {
+          color: #4daf4a;
+      }
+      .blue {
+          color: rgb(26, 9, 121);;
+      }
+      .purple {
+          color: #984ea3;
+      }
+    </style>
+  
+    <script>
+    
+
+    const header = d3.select('#header');
+    const nominal = d3.select('#nominal');
+    const ordinal = d3.select('#ordinal');
+    const interval = d3.select('#interval');
+    const ratio = d3.select('#ratio');
+
+    nominal.classed('red', true);
+    ordinal.classed('green', true);
+    interval.classed('blue', true);
+    ratio.classed('purple', true);
+
+    //descriptive header in header div
+    header.text('The Four Data Types').style('font-size', '30px');
+
+    //give each div a style and assign it a class based on its purpose
+    //give each div a header to start it
+    //follow header by description of the measurement and an example
+
+    //section headers
+    nominal.append('header')
+        .style('font-size', '20px')
+        .text('Nominal');
+    ordinal.append('header')
+        .style('font-size', '20px')
+        .text('Ordinal')
+    interval.append('header')
+        .style('font-size', '20px')
+        .text('Interval')
+    ratio.append('header')
+        .style('font-size', '20px')
+        .text('Ratio')
+  
+    //descriptive paragraphs
+    nominal.append('p')
+        .style('color', 'black')
+        .style('margin-left', '15px')
+        .text('Think of the nominal data type as qualitative categories. They are not numerical or quantitative values, but label categories of data distinct from other categories. An example is color (blue, red, green, magenta)');
+    ordinal.append('p')
+        .style('color', 'black')
+        .style('margin-left', '15px')
+        .text('Ordinal data orders data by importance and significant, but the actual difference between data points in the scale is not important. An example of ordinal data is likelihood. You might have seen question that ask you to rate your likehood to do something, 1 being least likely, 5 being most likely. The order is important, the exact difference between 1 and 2 or 3 and 4 is not important.')
+    interval.append('p')
+        .style('color', 'black')
+        .style('margin-left', '15px')
+        .text('Interval data orders data on an ordinal scale, but the difference between each data point IS important. These are typical numerical, since we can measure differnce easily. However, it is important to note that interval scales do not have a "true zero". This makes more sense with an example. Year of birth is ordinal (1999 is before 1998) and measure the difference between datapoints (1999 is one year more than 1998). You cannot be born in year zero, where no years come before it. Technically, you could be born at the start of the world, but that would not be realistic.')
+    ratio.append('p')
+        .style('color', 'black')
+        .style('margin-left', '15px')
+        .text('Ratio data is ordinal and interval data combined, WITH a "true zero". This kind of data is great to worth with because there are few limitations for summarizing it. An example of ratio data is weight. 100 lbs is greater than 101 lbs, the difference between the two is 1 lb, the scale can reach 0. You cannot have negative weight.')
+  
+    </script>
+  
+  </body>
