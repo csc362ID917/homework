@@ -1,3 +1,5 @@
+<!-- Creates a row of circles that increase in radius by 10x the factors of 24-->
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,6 +11,10 @@
     <svg id="area" width="600" height="200"></svg>
 </body>
 <script>
+    /** Finds the factors of a number 
+     * @params a number n
+     * @return an array of the factors of n
+    */
     function factors(n) {
         factorsArray = [];
         for (let i = 0; i < n; i++) {
@@ -19,10 +25,14 @@
         return factorsArray;
     }
 
+    //selecting the element with id "area"
     d3.select('#area')
+    //creating and selecting circles within the element
         .selectAll('circle')
+    //binding data from factors(24)
         .data(factors(24))
         .enter()
+    //appending to the circle definitions for its radius, position on an x,y plane, and the stroke color
         .append('circle')
             .attr('r', d => d)
             .attr('cx', d => d*10   )
