@@ -20,7 +20,7 @@ Your names goes here
           color: #4daf4a;
       }
       .blue {
-          color: rgb(26, 9, 121);;
+          color: rgb(26, 9, 121);
       }
       .purple {
           color: #984ea3;
@@ -44,10 +44,6 @@ Your names goes here
     //descriptive header in header div
     header.text('The Four Data Types').style('font-size', '30px');
 
-    //give each div a style and assign it a class based on its purpose
-    //give each div a header to start it
-    //follow header by description of the measurement and an example
-
     //section headers
     nominal.append('header')
         .style('font-size', '20px')
@@ -66,11 +62,11 @@ Your names goes here
     nominal.append('p')
         .style('color', 'black')
         .style('margin-left', '15px')
-        .text('Think of the nominal data type as qualitative categories. They are not numerical or quantitative values, but label categories of data distinct from other categories. An example is color (blue, red, green, magenta)');
+        .text('Think of the nominal data type as qualitative categories. They are not numerical or quantitative values, but label categories of data distinct from other categories. An example is color (blue, red, green, magenta)')
     ordinal.append('p')
         .style('color', 'black')
         .style('margin-left', '15px')
-        .text('Ordinal data orders data by importance and significant, but the actual difference between data points in the scale is not important. An example of ordinal data is likelihood. You might have seen question that ask you to rate your likehood to do something, 1 being least likely, 5 being most likely. The order is important, the exact difference between 1 and 2 or 3 and 4 is not important.')
+        .text('Ordinal data orders data by importance and significant, but the actual difference between data points in the scale is not important. An example of ordinal data is agreement. You might have seen question that ask you to rate your agreement with something, 1 being strongly disagree, 5 being strongly agree. The order is important, the exact difference between 1 and 2 or 3 and 4 is not important.')
     interval.append('p')
         .style('color', 'black')
         .style('margin-left', '15px')
@@ -80,6 +76,27 @@ Your names goes here
         .style('margin-left', '15px')
         .text('Ratio data is ordinal and interval data combined, WITH a "true zero". This kind of data is great to worth with because there are few limitations for summarizing it. An example of ratio data is weight. 100 lbs is greater than 101 lbs, the difference between the two is 1 lb, the scale can reach 0. You cannot have negative weight.')
   
+    //img appends
+    nominal.append('img')
+        .attr('src', './img/colors.png')
+        .attr('width', 350)
+        .attr('height', 200)
+    ordinal.append('img')
+        .attr('src', './img/agreement.png')
+        .attr('width', 700)
+        .attr('height', 150)
+        .style('margin', 25)
+    interval.append('img')
+        .attr('src', './img/birth_year.png')
+        .attr('width', 200)
+        .attr('height', 400)
+        .style('margin', 25)
+    ratio.append('img')
+        .attr('src', './img/weight.jfif')
+        .attr('width', 500)
+        .attr('height', 300)
+        .style('margin', 25)
+
     </script>
   
   </body>
