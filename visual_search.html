@@ -1,0 +1,147 @@
+<body>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+  
+    <style>
+      * {
+        font-family: sans-serif;
+      }
+      .bar-chart {
+        border: solid 1px gray;
+      }
+      .bar {
+        fill: orange;
+      }
+      .label {
+        font-size: 9pt;
+      }
+      .category {
+        text-anchor: end;
+      }
+    </style>
+    <script>
+      //read in the data
+
+      var margin = {top: 20, right: 20, bottom: 30, left: 40},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+      d3.select('body').append('h1').text('Visual Search');
+
+      var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("class", "bar-chart")
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      d3.select('body').append('p').text('insert paragraph here');
+
+      let data = d3.csv("dataFromClass.csv").then(data => {
+        data.forEach(d=> {
+          d.lines = +d.lines; // convert to number
+          d.time = +d.time;
+          d.highlight = d.highlight === 'TRUE'; //turns into boolean
+        });
+        
+        let avgData = {}; //map name id -> data for that id
+
+        const id = d => d.lines + "_" + d.highlight;//a line from my data
+
+        data.forEach(d => {
+          const currentId = id(d);
+          if (!avgData.hasOwnProperty(currentId)) { //if id is not in map
+            avgData[currentId] = {
+              lines: d.lines,
+              times: [],
+              highlight: d.highlight,
+              label: d.lines + ", " + d.highlight
+            };
+          }
+
+          avgData[currentId].times.push(d.time);
+        });
+        avgData = d3.values(avgData); // covert to array
+
+        avgData.forEach(d => {
+          d.time = d3.mean(d.times);
+        })
+
+        //sort data
+        avgData.sort((a,b) => {
+          if(a.lines === b.lines) return d3.descending(a.highlight, b.highlight)
+          else return d3.ascending(a.lines, b.lines);
+        });
+
+        console.log(avgData);
+
+        const x = d3.scaleBand()
+          .rangeRound([0, width])
+          .padding(0.1)
+          .domain(avgData.map(d => d.label));
+
+        const y = d3.scaleLinear()
+          .rangeRound([height, 0])
+          .domain([0, d3.max(avgData, d => d.time)]);
+
+        //color maps for scales
+
+        greenColorScale = d3.scaleLinear()
+          .domain([0, d3.max(avgData, d => d.time)])
+          .range(["#A9DFBF ", "#145A32"]);
+        
+        redColorScale = d3.scaleLinear()
+          .domain([0, d3.max(avgData, d => d.time)])
+          .range(["#D87B7B", "#FF0000"]);
+        
+        blueColorScale = d3.scaleLinear()
+          .domain([0, d3.max(avgData, d => d.time)])
+          .range(["#7494E4", "#0049FF"]);
+        
+        yellowColorScale = d3.scaleLinear()
+          .domain([0, d3.max(avgData, d => d.time)])
+          .range(["#F7DC6F", "#B7950B "]);
+
+        const entries = svg.selectAll("g")
+          .data(avgData)
+          .enter()
+            .append("g");
+        
+        entries.each(function(d, i) {
+          const entry = d3.select(this);
+          entry.append('rect')
+            .attr("class", "bar")
+            .attr("x", x(d.label))
+            .attr("width", x.bandwidth())
+            .attr("y", y(d.time))
+            .attr("height", height-y(d.time))
+            .style("fill", (d, i) => {
+              switch (d.lines) {
+                case 1:
+                  return greenColorScale(d.time);
+                  break;
+                case 2:
+                  return redColorScale(d.time)
+                  break;
+                case 3:
+                  return yellowColorScale(d.time)
+                  break;
+                case 4:
+                  return blueColorScale(d.time)
+                  break;
+              }
+            });
+
+        //d.lines==1 ? redColorScale(d.time) : blueColorScale(d.time)
+        
+        svg.append("g")
+          .attr("transform", "translate(0, " + height + ")")
+          .call(d3.axisBottom(x));
+
+        svg.append("g")
+          .call(d3.axisLeft(y));
+
+        });      
+      }); 
+    </script>
+  
+</body>
