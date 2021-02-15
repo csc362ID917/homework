@@ -13,27 +13,19 @@
     <script>
         const array = [92, 56, 14, 73, 22, 38, 93, 45, 55];
 
-        //selecting the svg element with id "area"
         d3.select('#area')
-        //creating and selecting circles within the element
             .selectAll('circle')
-        //binding data from array
-            .data(array)
+            .data(array)                            //binding data from array variable
             .enter()
-        //appending to each circle definitions for its radius, position on an x,y plane, and the stroke color
-            .append('circle')
-                //radius and cx definied by int element in array
+            .append('circle')                       //appending to each circle its radius, position
                 .attr('r', (d, i) => d/2)
                 .attr('cy', 100)
                 .attr('cx', (d, i) => i * 100 + 50)
 
-        //animating the circles after 2 seconds to change their position in row
-        setTimeout(function() {
+        setTimeout(function() {                     //animating circles after 2 sec to change their position in row
             d3.select('#area')
                 .selectAll('circle')
-                /* sorting array from smallest to largest values means 
-                the order that the circles populate is from smallest circle to largest */
-                .data(array.sort())
+                .data(array.sort())                 // sorting array to populate circle from smallest to largest
                 .transition()
                 .duration(1500)
                     .attr('r', (d, i) => d/2)
