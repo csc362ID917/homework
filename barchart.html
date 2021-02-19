@@ -1,0 +1,121 @@
+<!--
+A webpage for our team bar chart
+-->
+<body>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <script>
+     var margin = {top: 20, right: 20, bottom: 30, left: 40},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+    var title = d3.select("body").append("h1").text("Real Estate Investment Values Before & After 2008 Housing Bubble");
+
+    d3.select("body")
+        .append("p")
+        .text("For our project, we wanted to examine the trends in market traded stocks (individual securities) and ETFs (a collection of securities) \
+        before and after major economic crises to see if there are trends that can be used to predict and possibly prevent future crises from occuring. For the below graph, we \
+        specifically wanted to examine the value of a market traded real estate ETF, before and after the 2008 housing bubble crash, and attempt to visualize the crash as it occurred.")
+        .style("margin", 25);
+
+    var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .attr("class", "bar-chart")
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    d3.select("body")
+        .append("p")
+        .text("The above chart displays the price value of the VNQ ETF (a real estate ETF) in the months leading up to and after the 2008 housing bubble crisis. \
+         The market started to crash in September, 2008.")
+        .style("margin", 25);
+
+    var data = d3.csv("vnq.csv").then(data => { // Use data from VNQ ETF file
+      data.forEach(d => {
+        //Add dates, closing price
+        d.date = d.Date; //keep as string
+        d.close = +d.Close; //Convert to decimal value
+      });
+
+      avgData = {}; //map name id -> data for that id
+
+      data.forEach(d => {
+        let formattedDate = new Date(d.date.replace("/", "-"));
+        let curId = formattedDate.getMonth()+1 + "-" + formattedDate.getFullYear();
+        if(!avgData.hasOwnProperty(curId)) {
+            avgData[curId] = {
+                month: curId,
+                close: []
+            }
+        } else {
+                avgData[curId].close.push(d.close);
+            }
+        });
+
+        avgData = d3.values(avgData); //convert to array
+
+        avgData.forEach(d => {
+        d.close = d3.mean(d.close); //find avg closing price
+      });
+
+      //sort the data
+      avgData.sort((a, b) => {
+        //Sort based upon the year (the last character in the month string), and then by month (the characters leading up to the hyphen in the string)
+        if(a.month[-1] === b.month[-1]) return d3.ascending(a.month[a.month.indexOf("-")], b.month[b.month.indexOf("-")])
+        else return d3.ascending(a.month, b.month)
+      });
+
+      const x = d3.scaleBand()
+        .rangeRound([0, width])
+        .padding(0.1)
+        .domain(avgData.map(d => d.month));
+
+      const y = d3.scaleLinear()
+        .rangeRound([height, 0])
+        .domain([0, d3.max(avgData, d => d.close)+d3.max(avgData, d => d.close)/4]);
+
+      //color maps for the scales
+
+      nonHighlightedScale = d3.scaleLinear()
+        .domain([0, d3.max(avgData, d => d.close)])
+        .range(["grey", "black"])
+
+      highlightedScale = d3.scaleLinear()
+        .domain([0, d3.max(avgData, d => d.close)])
+        .range(["red", "green"])
+
+      const entries = svg.selectAll("g")
+        .data(avgData)
+        .enter()
+          .append("g");
+
+      entries.each(function(d, i) {
+        const entry = d3.select(this);
+        entry.append("rect")
+          .attr("class", "bar")
+          .attr("x", x(d.month)) 
+          .attr("width", x.bandwidth())
+          .attr("y", y(d.close))
+          .attr("height", height - y(d.close))
+          .style("fill", d.month ? highlightedScale(d.close) : nonHighlightedScale(d.close))
+
+        entry.append("text")
+            .text("$" + d.close.toFixed(2))
+            .attr("x", x(d.month) + x.bandwidth()/4) 
+            .attr("y", y(d.close)-5)
+            .style("font-size",12) 
+      });
+        
+      svg.append("g")
+      .attr("transform", "translate(0," +  height + ")")
+      .call(d3.axisBottom(x));
+
+      svg.append("g")
+        .call(d3.axisLeft(y));
+      
+    });
+    </script>
+    
+    <style></style>
+</body>
